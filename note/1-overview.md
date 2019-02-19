@@ -58,6 +58,47 @@ sudo yum install ssh
 sudo yum install rsync
 ```
 
-下载Hadoop：[Apache Download Mirrors](http://www.apache.org/dyn/closer.cgi/hadoop/common/)
+**安装 java**
 
-下载并安装Java
+利用yum源来安装 jdk（此方法不需要配置环境变量）：
+
+1. 查看yum库中的java安装包 ：yum -y list java*
+2. yum -y install java-1.8.0-openjdk*
+
+(安装完之后，默认的安装目录是在: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-1.b12.el7_4.x86_64)
+
+**安装 Hadoop**
+
+下载安装Hadoop：[Apache Download Mirrors](http://www.apache.org/dyn/closer.cgi/hadoop/common/)
+
+执行命令：（此命令会展示hadoop脚本文档）
+
+```
+bin/hadoop
+```
+
+现在，可以使用以下三种模式运行hadoop集群：
+
+- 本地模式 Local (Standalone) Mode
+- 伪分布式模式 Pseudo-Distributed Mode
+- 全分布式模式 Fully-Distributed Mode
+
+**本地模式**
+
+默认情况下，Hadoop配置为非分布式模式运行的，作为一个单独的java进程，这种模式下对调试是非常有用的
+
+下面的示例复制未打包的conf目录作为输入，然后查找并显示给定正则表达式的每个匹配项。输出被写入给定的输出目录。
+
+```
+$ mkdir input
+$ cp etc/hadoop/*.xml input
+$ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar grep input output 'dfs[a-z.]+'
+$ cat output/*
+```
+
+**伪分布式模式**
+
+
+
+**全分布式模式**
+
