@@ -25,20 +25,20 @@ Hadoop生态系统：
 **数据同步：**Sqoop
 **任务调度：**Oozie
 
-## HDFS
+**HDFS**
 
 - HDFS：分布式文件存储系统（Hadoop Distributed File System）
 - HDFS是GFS的克隆版
 - HDFS特点：扩展性&容错性&海量数据存储
 
-## YARN
+**YARN**
 
 - YARN：Hadoop资源管理器（Yet Another Resource Negotiator）
 
 - 负责整个集群资源的管理和调度
 - YARN特点：扩展性&容错性&多框Java
 
-## MapReduce
+**MapReduce**
 
 - 分布式计算框架，源自Google的MapReduce论文
 - Hadoop MapReduce是Google MapReduce的克隆版
@@ -102,3 +102,31 @@ $ cat output/*
 
 **全分布式模式**
 
+# Master-Slave Mode
+
+## 概念
+
+`主从设备模式`也叫做`主仆模式`英文简称为`Master-Slave`,核心思想是基于分而治之的思想,将一个原始任务分解为若干个语义等同的子任务,并由专门的工作者线程来并行执行这些任务,原始任务的结果是通过整合各个子任务的处理结果形成的.主要的使用场景有
+
+- 并行计算,以提升计算性能
+- 容错处理,以提升计算的可靠性
+- 计算精度,以提高计算的精确程度
+
+## 并行计算下模式举例
+
+在分布式的系统中,这个模式还是比较常用的,简单的说,`主从(Master-Slave)`与`进程-线程`的关系类似,`Master`只有一台机器作为`Master`,其他机器作为`Slave`,这些机器同时运行组成了`集群`.`Master`作为任务调度者,给多个`Slave`分配计算任务,当所有的`Slave`将任务完成之后,最后由`Master`汇集结果,这个其实也是`MapReduce`思想所在.
+
+例如在`Hadoop`中,`HDFS`采用了基于`Master/Slave`主从架构的分布式文件系统，一个`HDFS`集群包含一个单独的`Master`节点和多个`Slave`节点服务器，这里的一个单独的Master节点的含义是HDFS系统中只存在一个逻辑上的Master组件。一个逻辑的Master节点可以包括两台物理主机，即两台Master服务器、多台Slave服务器。一台Master服务器组成单`NameNode`集群，两台Master服务器组成双`NameNode`集群，并且同时被多个客户端访问，所有的这些机器通常都是普通的Linux机器，运行着用户级别(user-level)的服务进程.
+
+<div>
+    <image src="img/namenode-datanode.jpg"></image>
+</div>
+
+
+
+在上图中展示了 HDFS 的 NameNode , DataNode 以及客户端之间的存取访问关系, `NameNode` 作为 `Master` 服务，它负责管理文件系统的命名空间和客户端对文件的访问。`NameNode`会保存文件系统的具体信息，包括文件信息、文件被分割成具体`block`块的信息、以及每一个`block`块归属的`DataNode`的信息。对于整个集群来说，`HDFS`通过`NameNode`对用户提供了一个单一的命名空间。`DataNode`作为`slave`服务，在集群中可以存在多个。通常每一个`DataNode`都对应于一个物理节点。`DataNode`负责管理节点上它们拥有的存储，它将存储划分为多个`block`块，管理`block`块信息，同时周期性的将其所有的`block`块信息发送给`NameNode`。
+
+## 优缺点
+
+- 优点:准确性——将服务的执行委托给不同的从设备，具有不同的实现。
+- 缺点:从设备是孤立的,没有共享的状态。主-从通信中的延迟可能是一个问题，例如在实时系统中。这种模式只能应用于可以分解的问题。

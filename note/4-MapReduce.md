@@ -1,0 +1,13 @@
+
+
+**JobClient、JobTracker、JobTask**
+
+- hadoop的集群是基于master/slave模式，namenode和jobtracker属于master，datanode和tasktracker属于slave，master只有一个，而slave有多个.
+- SecondaryNameNode内存需求和NameNode在一个数量级上，所以通常secondary NameNode（运行在单独的物理机器上）和 NameNode 运行在不同的机器上。
+- JobTracker对应于NameNode,TaskTracker对应于DataNode.
+- DataNode和NameNode是针对数据存放来而言的.JobTracker和TaskTracker是对于MapReduce执行而言的.
+  mapreduce中几个主要概念，mapreduce 整体上可以分为这么几条执行线索：jobclient，JobTracker与TaskTracker
+
+1. JobClient会在用户端通过JobClient类将已经配置参数打包成jar文件的应用存储到hdfs，并把路径提交到Jobtracker,然后由JobTracker创建每一个Task（即 MapTask 和 ReduceTask） 并将它们分发到各个TaskTracker服务中去执行。
+2. JobTracker是一master服务，软件启动之后JobTracker接收Job，负责调度Job的每一个子任务。task运行于TaskTracker上，并监控它们，如果发现有失败的task就重新运行它。一般情况应该把JobTracker 部署在单独的机器上
+3. TaskTracker是运行在多个节点上的slaver服务。TaskTracker主动与JobTracker通信，接收作业，并负责直接执行每一个任务。 TaskTracker 都需要运行在HDFS的DataNode上。
