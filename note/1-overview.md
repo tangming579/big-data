@@ -60,12 +60,36 @@ sudo yum install rsync
 
 **安装 java**
 
-利用yum源来安装 jdk（此方法不需要配置环境变量）：
+- 方法一：利用yum源来安装 jdk（此方法不需要配置环境变量）：
 
-1. 查看yum库中的java安装包 ：yum -y list java*
-2. yum -y install java-1.8.0-openjdk*
+  1. 查看yum库中的java安装包 ：yum -y list java
 
-(安装完之后，默认的安装目录是在: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-1.b12.el7_4.x86_64)
+  2. yum -y install java-1.8.0-openjdk*
+
+     (安装完之后，默认的安装目录是在: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-1.b12.el7_4.x86_64)
+
+- 方法二：
+
+  1. wget下载Hadoop的tar.gz包
+
+  2. 解压缩包：tar -zxvf /home/ftp/jdk-8u111-linux-x64.tar.gz -C /home/soft
+
+  3. 配置环境变量：vim /etc/profile
+
+  4. ```
+     export JAVA_HOME=/usr/local/java/jdk1.8.0_201
+     export JRE_HOME=${JAVA_HOME}/jre
+     export HADOOP_HOME=/usr/local/hadoop-3.2.0/hadoop-3.2.0/
+     export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+     export PATH=${JAVA_HOME}/bin:$HADOOP_HOME/bin:$PATH
+     ```
+
+     执行Profile：
+
+     ```
+     source /etc/profile
+     ```
+
 
 **安装 Hadoop**
 
