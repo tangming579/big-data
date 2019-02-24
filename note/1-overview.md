@@ -182,11 +182,41 @@ $ cat output/*
 
    **注：**假如HDFS格式化后启动dfs出现以下错误：Attempting to operate on hdfs namenode as root
 
+   在/hadoop/sbin路径下： 
+   将start-dfs.sh，stop-dfs.sh两个文件顶部添加以下参数
 
+   ```
+   #!/usr/bin/env bash
+   HDFS_DATANODE_USER=root
+   HADOOP_SECURE_DN_USER=hdfs
+   HDFS_NAMENODE_USER=root
+   HDFS_SECONDARYNAMENODE_USER=root
+   ```
 
-   验证是否启动成功：
+   还有，start-yarn.sh，stop-yarn.sh顶部也需添加以下：
+
+   ```
+   
+   ```
+
+   修改后重启 ./start-dfs.sh，成功！
+
+   - 验证是否启动成功：jps
+
+   ```
+   DataNode
+   SecondaryNameNode
+   NameNode
+   
+   浏览器访问方式： http://hadoop000:50070
+   ```
 
 6. 停止hdfs
+
+   ```
+   sbin/stop-dfs.sh 
+   ```
+
 
 **全分布式模式**
 
