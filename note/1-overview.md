@@ -56,17 +56,20 @@ Hadoop生态系统：
 ```
 sudo yum install ssh
 sudo yum install rsync
+
+ssh-keygen -t rsa
+cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
 ```
 
 **安装 java**
 
-- 方法一：利用yum源来安装 jdk（此方法不需要配置环境变量）：
+- 方法一：利用yum源来安装 jdk（此方法不需要配置环境变量，此方法只能安装openjdk）：
 
   1. 查看yum库中的java安装包 ：yum -y list java
 
   2. yum -y install java-1.8.0-openjdk*
 
-     (安装完之后，默认的安装目录是在: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-1.b12.el7_4.x86_64)
+     **注：**(安装完之后，默认的安装目录是在: /usr/lib/jvm/)
 
 - 方法二：
 
@@ -122,7 +125,68 @@ $ cat output/*
 
 **伪分布式模式**
 
+1. 安装Java JDK（同上）
 
+2. 安装ssh（遇到提示直接回车）
+
+   ```
+   sudo yum -y install ssh
+   ssh-keygen -t rsa
+   cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys	
+   ```
+
+3. 下载并解压hadoop
+
+   ```
+   下载：直接去cdh网站下载
+   解压：tar -zxvf hadoop-3.2.0.tar.gz -C ~/app
+   ```
+
+4. hadoop配置文件的修改(hadoop_home/etc/hadoop)
+
+   ```
+   hadoop-env.sh
+   		export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79
+   
+   core-site.xml
+   		<property>
+   	        <name>fs.defaultFS</name>
+   	        <value>hdfs://hadoop000:8020</value>
+   	    </property>
+   	    <property>
+   	        <name>hadoop.tmp.dir</name>
+   	        <value>/home/hadoop/app/tmp</value>
+   	    </property>
+   
+   hdfs-site.xml
+   		<property>
+   	        <name>dfs.replication</name>
+   	        <value>1</value>
+   	    </property>
+   ```
+
+5. 启动hdfs
+
+   - 格式化文件系统（仅第一次执行即可，不要重复执行）：
+
+   ```
+   cd /root/app/hadoop-3.2.0/bin
+   ./hadoop namenode -format
+   ```
+
+   - 启动hdfs
+
+   ```
+    sbin/start-dfs.sh
+   ```
+
+   **注：**假如HDFS格式化后启动dfs出现以下错误：Attempting to operate on hdfs namenode as root
+
+
+
+   验证是否启动成功：
+
+6. 停止hdfs
 
 **全分布式模式**
 
