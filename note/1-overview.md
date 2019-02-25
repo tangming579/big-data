@@ -180,7 +180,7 @@ $ cat output/*
     sbin/start-dfs.sh
    ```
 
-   **注：**假如HDFS格式化后启动dfs出现以下错误：Attempting to operate on hdfs namenode as root
+   **注：** 假如HDFS格式化后启动dfs出现以下错误：Attempting to operate on hdfs namenode as root
 
    在/hadoop/sbin路径下： 
    将start-dfs.sh，stop-dfs.sh两个文件顶部添加以下参数
@@ -196,7 +196,10 @@ $ cat output/*
    还有，start-yarn.sh，stop-yarn.sh顶部也需添加以下：
 
    ```
-   
+   #!/usr/bin/env bash
+   YARN_RESOURCEMANAGER_USER=root
+   HADOOP_SECURE_DN_USER=yarn
+   YARN_NODEMANAGER_USER=root
    ```
 
    修改后重启 ./start-dfs.sh，成功！
