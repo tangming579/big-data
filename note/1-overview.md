@@ -44,7 +44,7 @@ Hadoop生态系统：
 - Hadoop MapReduce是Google MapReduce的克隆版
 - MapReduce特点：扩展性&容错性&海量数据离线处理
 
-# Hadoop单节点安装
+# Hadoop安装
 
 **软件要求**
 
@@ -149,14 +149,22 @@ $ cat output/*
    		export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79
    
    core-site.xml
-   		<property>
-   	        <name>fs.defaultFS</name>
-   	        <value>hdfs://hadoop000:8020</value>
-   	    </property>
-   	    <property>
-   	        <name>hadoop.tmp.dir</name>
-   	        <value>/home/hadoop/app/tmp</value>
-   	    </property>
+   		<configuration>
+       		<property>
+           		<name>fs.defaultFS</name>
+           		<value>hdfs://localhost:9000</value>
+       		</property>
+       		<property>
+           		<name>hadoop.tmp.dir</name>
+           		<value>/home/hadoop/app/</value>
+           		<description>hadoop_temp</description>
+       		</property>
+       		<property>
+           		<name>fs.default.name</name>
+           		<value>hdfs://localhost:8020</value>
+           		<description>hdfs_derect</description>
+       		</property>
+   		</configuration>
    
    hdfs-site.xml
    		<property>
@@ -219,6 +227,13 @@ $ cat output/*
    ```
    sbin/stop-dfs.sh 
    ```
+
+访问 http://localhost:50070
+
+<div>
+    <image src="img/hadoop-install.png"></image>
+</div>
+
 
 
 **全分布式模式**
