@@ -26,7 +26,7 @@ public class HDFSApp {
         System.out.println("HDFS setUp");
 
         configuration = new Configuration();
-        fileSystem = FileSystem.get(new URI(HDFS_PATH),configuration);
+        fileSystem = FileSystem.get(new URI(HDFS_PATH),configuration,"hadoop");
     }
 
     @After
