@@ -1,6 +1,7 @@
 package com.tm.hadoop.hdfs;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.junit.After;
@@ -16,11 +17,24 @@ public class HDFSApp {
     FileSystem fileSystem = null;
     Configuration configuration = null;
 
+    /*
+    创建HDFS目录
+    */
     @Test
     public void mkdir() throws Exception{
         fileSystem.mkdirs(new Path("/hdfsapi/test"));
     }
+    /*
+    创建文件
+    */
+    @Test
+    public void create() throws Exception{
+        FSDataOutputStream output = fileSystem.create(new Path("hdfsapi/test/a.txt"));
+        output.write("hello hadoop".getBytes());
+        output.flush();
 
+        System.out.println("HDFS Create File");
+    }
     @Before
     public void setUp() throws Exception{
         System.out.println("HDFS setUp");
