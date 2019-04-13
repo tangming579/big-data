@@ -1,10 +1,3 @@
-<div>
-    <p align="center">
-  		<a href="https://book.douban.com/subject/27115351/">
-    		<img height="100" src="note/img/logo.jpg?sanitize=true">
-  		</a>
-	</p>
-</div>
 
 # 大数据开发相关知识总结
 
@@ -32,3 +25,11 @@
 9. Kafka与ZooKeeper
 10. Storm
 11. Hive
+
+<div>
+    <p align="center">
+  		<a href="https://book.douban.com/subject/27115351/">
+    		<img height="100" src="note/img/logo.jpg?sanitize=true">
+  		</a>
+	</p>
+</div>
